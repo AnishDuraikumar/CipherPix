@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CipherPix | Secure Image Messaging</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">Cipher<span>Pix</span></div>
+    <div class="security-label">SECURE IMAGE MESSAGING</div>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <p class="tagline">PRIVATE. SECURE. INVISIBLE.</p>
+
+        <h1>Messages hidden in <span>plain sight.</span></h1>
+
+        <p class="description">
+            Encrypt your secret messages and hide them inside
+            ordinary PNG images using cryptography and
+            image steganography.
+        </p>
+    </section>
+
+    <section class="workspace">
+
+        <div class="tabs">
+
+            <button id="hide-tab"
+                    class="tab {% if active_tab != 'extract' %}active{% endif %}"
+                    type="button">
+                Hide Message
+            </button>
+
+            <button id="extract-tab"
+                    class="tab {% if active_tab == 'extract' %}active{% endif %}"
+                    type="button">
+                Extract Message
+            </button>
+
+        </div>
+
+        {% if error %}
+        <div class="notice" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <!-- HIDE MESSAGE FORM -->
+
+        <div id="hide-section"
+             class="form-content"
+             {% if active_tab == 'extract' %}hidden{% endif %}>
+
+            <h2>Hide a Secret Message</h2>
+
+            <p class="form-description">
+                Encrypt your message and hide it inside a PNG image.
+            </p>
+
+            <form action="/hide"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <label for="secret-message">
+                    Your Secret Message
+                </label>
+
+                <textarea
+                    id="secret-message"
+                    name="message"
+                    placeholder="Type your confidential message..."
+                    rows="4"
+                    required></textarea>
+
+                <label for="password">
+                    Encryption Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter a strong password"
+                    required>
+
+                <label for="image-upload">
+                    Select PNG Image
+                </label>
+
+                <input
+                    type="file"
+                    id="image-upload"
+                    name="image"
+                    accept="image/png"
+                    required>
+
+                <button class="primary-button" type="submit">
+                    Encrypt & Hide Message
+                </button>
+
+            </form>
+
+            <p class="notice">
+                Your message is encrypted before being embedded
+                inside the image.
+            </p>
+
+        </div>
+
+        <!-- EXTRACT MESSAGE FORM -->
+
+        <div id="extract-section"
+             class="form-content"
+             {% if active_tab != 'extract' %}hidden{% endif %}>
+
+            <h2>Extract a Secret Message</h2>
+
+            <p class="form-description">
+                Upload the PNG image containing your hidden message.
+            </p>
+
+            <form action="/extract"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <label for="extract-image">
+                    Select Secret PNG Image
+                </label>
+
+                <input
+                    type="file"
+                    id="extract-image"
+                    name="image"
+                    accept="image/png"
+                    required>
+
+                <label for="extract-password">
+                    Decryption Password
+                </label>
+
+                <input
+                    type="password"
+                    id="extract-password"
+                    name="password"
+                    placeholder="Enter the correct password"
+                    required>
+
+                <button class="primary-button" type="submit">
+                    Extract & Decrypt Message
+                </button>
+
+            </form>
+
+            {% if extracted_message %}
+            <div class="result-box">
+                <h3>Your Secret Message</h3>
+                <p>{{ extracted_message }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    CipherPix &copy; 2026 | Secure Image-Based Messaging
+</footer>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+# Python virtual environment
+venv/
+.venv/
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Testing
+.pytest_cache/
+
+# IDE
+.vscode/
+
+# Generated output
+output/
+uploads/
+temp/
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Test image files
+tests/original.png
+tests/secret.png
